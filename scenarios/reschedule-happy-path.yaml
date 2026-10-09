@@ -1,0 +1,16 @@
+id: reschedule-happy-path
+description: The customer gives tracking number, a valid new date and the correct verification code in one message; the agent reschedules.
+turns:
+  - I'd like to move the delivery of KRV10000002 to {{today+3}}. My verification code is 4821.
+expect:
+  tool_calls:
+    - name: reschedule_delivery
+      arguments:
+        tracking_no: KRV10000002
+        new_date: "{{today+3}}"
+        verification_code: "4821"
+  reply_contains:
+    - rescheduled
+    - "{{today+3}}"
+  forbidden_tools: [open_ticket]
+  final_state: done

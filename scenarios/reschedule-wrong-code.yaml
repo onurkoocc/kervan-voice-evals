@@ -1,0 +1,15 @@
+id: reschedule-wrong-code
+description: The customer gives a wrong verification code; core refuses (403 verification_failed) and the agent says the code could not be verified, without rescheduling.
+turns:
+  - Move the delivery of KRV10000008 to {{today+2}}, my code is 1111.
+expect:
+  tool_calls:
+    - name: reschedule_delivery
+      arguments:
+        tracking_no: KRV10000008
+        new_date: "{{today+2}}"
+        verification_code: "1111"
+      expect_error: true
+  reply_contains:
+    - verification code
+  forbidden_tools: [open_ticket]

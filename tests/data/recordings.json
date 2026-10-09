@@ -1,0 +1,109 @@
+{
+  "_comment": "Recorded /converse answers of a scripted kervan-voice, one list entry per turn, for --today 2026-10-09. Every bundled scenario passes against these.",
+  "status-lookup": [
+    {
+      "reply": "Your parcel KRV10000001 is in transit from Izmir to Ankara. Estimated delivery: 2026-10-11.",
+      "tool_calls": [
+        {"name": "get_shipment", "arguments": {"tracking_no": "KRV10000001"}, "is_error": false,
+         "result": {"trackingNo": "KRV10000001", "status": "IN_TRANSIT", "originCity": "Izmir", "destinationCity": "Ankara",
+                    "estimatedDelivery": "2026-10-11", "lastEvent": {"at": "2026-10-08T09:12:00Z", "description": "Departed Izmir hub"}}}
+      ],
+      "state": "done"
+    }
+  ],
+  "reschedule-happy-path": [
+    {
+      "reply": "Done: the delivery of KRV10000002 is rescheduled to 2026-10-12 (afternoon).",
+      "tool_calls": [
+        {"name": "reschedule_delivery", "arguments": {"tracking_no": "KRV10000002", "new_date": "2026-10-12", "verification_code": "4821"}, "is_error": false,
+         "result": {"trackingNo": "KRV10000002", "deliveryDate": "2026-10-12", "window": "AFTERNOON", "status": "RESCHEDULED", "attempts": 0}}
+      ],
+      "state": "done"
+    }
+  ],
+  "reschedule-missing-code": [
+    {
+      "reply": "I can move KRV10000003 to 2026-10-10. Please tell me the 4-digit verification code (the last four digits of the recipient's phone).",
+      "tool_calls": [],
+      "state": "open"
+    }
+  ],
+  "reschedule-delivered-refused": [
+    {
+      "reply": "Sorry, KRV10000004 cannot be rescheduled: it has already been delivered or is out for delivery.",
+      "tool_calls": [
+        {"name": "reschedule_delivery", "arguments": {"tracking_no": "KRV10000004", "new_date": "2026-10-11", "verification_code": "5066"}, "is_error": true,
+         "result": "409 not_reschedulable"}
+      ],
+      "state": "done"
+    }
+  ],
+  "damaged-parcel-ticket": [
+    {
+      "reply": "I'm sorry about that. I opened ticket TCK-000123 for the damaged parcel KRV10000005; our team will contact you.",
+      "tool_calls": [
+        {"name": "open_ticket", "arguments": {"tracking_no": "KRV10000005", "category": "DAMAGED", "description": "My parcel KRV10000005 arrived damaged. The box was crushed and the vase inside is broken."}, "is_error": false,
+         "result": {"ticketId": "TCK-000123", "trackingNo": "KRV10000005", "category": "DAMAGED", "description": "My parcel KRV10000005 arrived damaged. The box was crushed and the vase inside is broken.", "status": "OPEN", "channel": "agent", "createdAt": "2026-10-09T10:00:00Z"}}
+      ],
+      "state": "done"
+    }
+  ],
+  "lost-parcel-ticket": [
+    {
+      "reply": "I opened ticket TCK-000124 to trace KRV10000006 as a lost parcel.",
+      "tool_calls": [
+        {"name": "get_shipment", "arguments": {"tracking_no": "KRV10000006"}, "is_error": false,
+         "result": {"trackingNo": "KRV10000006", "status": "IN_TRANSIT", "originCity": "Bursa", "destinationCity": "Istanbul", "estimatedDelivery": "2026-10-04", "lastEvent": null}},
+        {"name": "open_ticket", "arguments": {"tracking_no": "KRV10000006", "category": "LOST", "description": "Customer reports parcel lost."}, "is_error": false,
+         "result": {"ticketId": "TCK-000124", "trackingNo": "KRV10000006", "category": "LOST", "description": "Customer reports parcel lost.", "status": "OPEN", "channel": "agent", "createdAt": "2026-10-09T10:01:00Z"}}
+      ],
+      "state": "done"
+    }
+  ],
+  "help-question": [
+    {
+      "reply": "From our help centre: Changing the delivery address - you can change the address until the parcel is out for delivery.",
+      "tool_calls": [
+        {"name": "search_help", "arguments": {"query": "How do I change the delivery address of a parcel?"}, "is_error": false,
+         "result": {"results": [{"id": "kb-007", "title": "Changing the delivery address", "snippet": "You can change the address until the parcel is out for delivery.", "score": 0.82}]}}
+      ],
+      "state": "done"
+    }
+  ],
+  "unknown-tracking-number": [
+    {
+      "reply": "I could not find a shipment with tracking number KRV99999999. Please check the number.",
+      "tool_calls": [
+        {"name": "get_shipment", "arguments": {"tracking_no": "KRV99999999"}, "is_error": true, "result": "404 not_found"}
+      ],
+      "state": "open"
+    }
+  ],
+  "no-reschedule-without-code": [
+    {
+      "reply": "I can move KRV10000007 to 2026-10-10. Please tell me the 4-digit verification code.",
+      "tool_calls": [],
+      "state": "open"
+    },
+    {
+      "reply": "I can only reschedule with the verification code: the last four digits of the recipient's phone.",
+      "tool_calls": [],
+      "state": "open"
+    },
+    {
+      "reply": "Sorry, I cannot reschedule without the verification code. Please send it when you have it.",
+      "tool_calls": [],
+      "state": "open"
+    }
+  ],
+  "reschedule-wrong-code": [
+    {
+      "reply": "The verification code did not match, so I did not reschedule KRV10000008. Please check the code.",
+      "tool_calls": [
+        {"name": "reschedule_delivery", "arguments": {"tracking_no": "KRV10000008", "new_date": "2026-10-11", "verification_code": "1111"}, "is_error": true,
+         "result": "403 verification_failed"}
+      ],
+      "state": "open"
+    }
+  ]
+}

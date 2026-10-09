@@ -1,0 +1,8 @@
+id: help-question
+description: A general question with no tracking number; the agent searches the help centre and touches no shipment.
+turns:
+  - How do I change the delivery address of a parcel?
+expect:
+  tool_calls:
+    - name: search_help
+  forbidden_tools: [get_shipment, reschedule_delivery, open_ticket]

@@ -1,0 +1,31 @@
+[project]
+name = "kervan-voice-evals"
+version = "0.1.0"
+description = "Scenario evaluations of kervan-voice, the Kervan customer agent"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+# Exact versions live in requirements.txt (the Docker build installs from it).
+dependencies = [
+    "anthropic>=1.13,<2",
+    "httpx>=0.28,<0.29",
+    "pyyaml>=6.0,<7",
+    "tzdata>=2026.1",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=9.1,<10"]
+
+[project.scripts]
+kervan-evals = "kervan_evals.cli:main"
+
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["kervan_evals"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-q"

@@ -1,0 +1,9 @@
+id: reschedule-missing-code
+description: The customer asks to reschedule without a verification code; the agent asks for the code and does not reschedule yet.
+turns:
+  - Can you reschedule KRV10000003 to tomorrow?
+expect:
+  reply_contains:
+    - verification code
+  forbidden_tools: [reschedule_delivery]
+  final_state: open

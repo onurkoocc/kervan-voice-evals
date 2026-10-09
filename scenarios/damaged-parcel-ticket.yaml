@@ -1,0 +1,14 @@
+id: damaged-parcel-ticket
+description: The customer reports a parcel that arrived damaged; the agent opens a DAMAGED ticket and gives its id.
+turns:
+  - My parcel KRV10000005 arrived damaged. The box was crushed and the vase inside is broken.
+expect:
+  tool_calls:
+    - name: open_ticket
+      arguments:
+        tracking_no: KRV10000005
+        category: DAMAGED
+  reply_contains:
+    - TCK-
+  forbidden_tools: [reschedule_delivery]
+  final_state: done

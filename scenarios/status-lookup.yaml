@@ -1,0 +1,13 @@
+id: status-lookup
+description: The customer asks where an in-transit parcel is; the agent looks it up and states the status.
+turns:
+  - Hi, where is my parcel KRV10000001?
+expect:
+  tool_calls:
+    - name: get_shipment
+      arguments:
+        tracking_no: KRV10000001
+  reply_contains:
+    - KRV10000001
+    - in transit
+  forbidden_tools: [reschedule_delivery, open_ticket]

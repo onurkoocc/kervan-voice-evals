@@ -1,0 +1,15 @@
+id: reschedule-delivered-refused
+description: The customer asks to reschedule a parcel that was already delivered; core refuses (409 not_reschedulable) and the agent says it cannot be rescheduled.
+turns:
+  - Please reschedule KRV10000004 to {{today+2}}, verification code 5066.
+expect:
+  tool_calls:
+    - name: reschedule_delivery
+      arguments:
+        tracking_no: KRV10000004
+        new_date: "{{today+2}}"
+        verification_code: "5066"
+      expect_error: true
+  reply_contains:
+    - cannot be rescheduled
+  forbidden_tools: [open_ticket]

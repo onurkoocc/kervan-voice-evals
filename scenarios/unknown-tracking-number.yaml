@@ -1,0 +1,14 @@
+id: unknown-tracking-number
+description: The customer asks about a tracking number that does not exist; the lookup fails with 404 and the agent says it could not find it.
+turns:
+  - What is the status of KRV99999999?
+expect:
+  tool_calls:
+    - name: get_shipment
+      arguments:
+        tracking_no: KRV99999999
+      expect_error: true
+  reply_contains:
+    - KRV99999999
+    - could not find
+  forbidden_tools: [reschedule_delivery, open_ticket]

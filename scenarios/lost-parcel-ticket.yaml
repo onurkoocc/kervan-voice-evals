@@ -1,0 +1,14 @@
+id: lost-parcel-ticket
+description: The customer reports a parcel as lost; the agent opens a LOST ticket and gives its id.
+turns:
+  - I think my parcel KRV10000006 is lost. It never arrived and nobody can tell me where it is.
+expect:
+  tool_calls:
+    - name: open_ticket
+      arguments:
+        tracking_no: KRV10000006
+        category: LOST
+  reply_contains:
+    - TCK-
+  forbidden_tools: [reschedule_delivery]
+  final_state: done
