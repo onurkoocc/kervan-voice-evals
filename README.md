@@ -1,5 +1,8 @@
 # kervan-voice-evals
 
+> Part of **[Kervan](https://github.com/onurkoocc/kervan-system)**, a fictional cargo company built as a
+> reference for backends where AI agents can safely act on a customer's behalf. Start there.
+
 Scenario evaluations of **kervan-voice**, the Kervan customer agent (Kervan
 SPEC §1, §8, §9). Each scenario plays a short customer conversation against
 `POST /converse` and checks deterministically what the agent did: which
